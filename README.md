@@ -71,3 +71,13 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+les différentes routes de mon API sont : 
+- {/blog, GET} route
+- {/blog/:articleId, GET} route
+-  {/blog, POST} route
+-  {/blog/:articleId, PUT} route
+- {/blog/:articleId, DELETE} route
+-  {/blog/comment/:articleId, POST} route
+- {/blog/tag/:tagName, POST} route 
+- {/blog/:articleId/tag/:tagId, PATCH} route
