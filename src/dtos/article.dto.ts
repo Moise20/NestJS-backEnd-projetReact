@@ -4,5 +4,5 @@ export class ArticleDto{
 
     body: string;
 
-    
+    image: string;
 }
