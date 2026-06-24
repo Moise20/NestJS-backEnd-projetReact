@@ -1,0 +1,43 @@
+# [LEARN] render.yaml configure le déploiement automatique sur Render.
+# [LEARN] Render lit ce fichier pour créer et configurer le service web automatiquement
+# [LEARN] quand tu connectes le repo GitHub dans le dashboard Render.
+# [LEARN]
+# [LEARN] IMPORTANT : les variables d'environnement sensibles (DB_PASSWORD, JWT_SECRET)
+# [LEARN] ne doivent PAS être mises ici. Ce fichier est commité sur GitHub.
+# [LEARN] Tu les ajouteras manuellement dans Render → Environment → Secret files.
+
+services:
+  - type: web
+    name: ecommerce-blog-api
+    runtime: node
+    region: frankfurt
+    plan: free
+
+    buildCommand: npm install --legacy-peer-deps && npm run build
+    startCommand: node dist/main
+
+    healthCheckPath: /blog
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3301
+      # [LEARN] Les variables suivantes sont marquées 'sync: false' = à renseigner
+      # [LEARN] manuellement dans le dashboard Render. Ne pas mettre les valeurs ici.
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: FRONTEND_URL
+        sync: false

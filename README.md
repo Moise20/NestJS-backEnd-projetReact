@@ -1,83 +1,156 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# E-Commerce Blog — Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+REST API for an e-commerce platform built with **NestJS**, **TypeORM** and **PostgreSQL**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![NestJS](https://img.shields.io/badge/NestJS-v9-red?logo=nestjs)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?logo=postgresql)
+![JWT](https://img.shields.io/badge/Auth-JWT-orange)
+![CI](https://github.com/Moise20/NestJS-backEnd-projetReact/actions/workflows/ci.yml/badge.svg)
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## About the project
 
-## Installation
+This API powers a product catalog presented as a blog. Users can browse products (articles), add them to a cart and place orders. Admins can create, update and delete products.
+
+This is a personal portfolio project built to demonstrate full-stack skills with React and NestJS.
+
+---
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Framework | NestJS 9 |
+| Language | TypeScript |
+| ORM | TypeORM 0.3 |
+| Database | PostgreSQL (Neon in production) |
+| Auth | JWT + Passport + bcrypt |
+| Validation | class-validator / class-transformer |
+| File uploads | Multer |
+| CI/CD | GitHub Actions + SonarCloud |
+| Hosting | Render |
+
+---
+
+## Features
+
+- **Authentication** — register and login with JWT tokens
+- **Product catalog** — CRUD for articles/products with image upload
+- **Tags & comments** — tag management and per-product comments
+- **Likes** — like system on articles
+- **Cart** — add, update, remove items (authenticated)
+- **Orders** — checkout flow with price snapshot at order time, order history
+
+---
+
+## Getting started
+
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL 14+ (or a [Neon](https://neon.tech) account for cloud hosting)
+
+### Installation
 
 ```bash
-$ npm install
+git clone https://github.com/Moise20/NestJS-backEnd-projetReact.git
+cd NestJS-backEnd-projetReact
+npm install --legacy-peer-deps
 ```
 
-## Running the app
+### Environment variables
+
+Copy `.env.example` to `.env` and fill in your values:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cp .env.example .env
 ```
 
-## Test
+| Variable | Description |
+|---|---|
+| `DB_HOST` | PostgreSQL host |
+| `DB_PORT` | PostgreSQL port (default: 5432) |
+| `DB_USERNAME` | Database user |
+| `DB_PASSWORD` | Database password |
+| `DB_NAME` | Database name |
+| `JWT_SECRET` | Secret key for signing JWT tokens — use a long random string in production |
+| `JWT_EXPIRES_IN` | Token expiration (e.g. `7d`) |
+| `PORT` | Server port (default: 3301) |
+
+### Run in development
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run start:dev
 ```
 
-## Support
+The API will be available at `http://localhost:3301`.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## API endpoints
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Authentication (public)
 
-## License
+| Method | Route | Description |
+|---|---|---|
+| POST | `/auth/register` | Create an account |
+| POST | `/auth/login` | Login — returns a JWT token |
 
-Nest is [MIT licensed](LICENSE).
+### Products / Articles
 
-les différentes routes de mon API sont : 
-- {/blog, GET} route
-- {/blog/:articleId, GET} route
--  {/blog, POST} route
--  {/blog/:articleId, PUT} route
-- {/blog/:articleId, DELETE} route
--  {/blog/comment/:articleId, POST} route
-- {/blog/tag/:tagName, POST} route 
-- {/blog/:articleId/tag/:tagId, PATCH} route
+| Method | Route | Auth | Description |
+|---|---|---|---|
+| GET | `/blog` | — | List all products |
+| GET | `/blog/:id` | — | Get one product |
+| POST | `/blog/article` | Required | Create a product |
+| PUT | `/blog/:id` | Required | Update a product |
+| DELETE | `/blog/:id` | Required | Delete a product |
+| POST | `/blog/:id/like` | — | Like a product |
+| POST | `/blog/comment/:id` | — | Add a comment |
+| POST | `/blog/tag/:name` | Required | Create a tag |
+| PATCH | `/blog/:id/tag/:tagId` | Required | Associate a tag |
+
+### Cart (authenticated)
+
+| Method | Route | Description |
+|---|---|---|
+| GET | `/cart` | Get current cart |
+| POST | `/cart/items` | Add item to cart |
+| PATCH | `/cart/items/:itemId` | Update item quantity |
+| DELETE | `/cart/items/:itemId` | Remove item |
+
+### Orders (authenticated)
+
+| Method | Route | Description |
+|---|---|---|
+| POST | `/orders` | Place order from current cart |
+| GET | `/orders` | Get order history |
+| GET | `/orders/:id` | Get a specific order |
+
+---
+
+## Project structure
+
+```
+src/
+├── auth/           # JWT authentication (register, login, guard, strategy)
+├── users/          # User entity and service
+├── blog/           # Product catalog (articles, comments, tags, likes)
+├── cart/           # Shopping cart
+├── orders/         # Order management
+└── dtos/           # Shared DTOs
+```
+
+---
+
+## Deployment
+
+This API is designed to be deployed on [Render](https://render.com) with a [Neon](https://neon.tech) PostgreSQL database.
+
+Set all environment variables in your Render service settings. SSL is enabled automatically when `DB_HOST` is not `localhost`.
+
+---
+
+*Portfolio project — Moïse PANA*
