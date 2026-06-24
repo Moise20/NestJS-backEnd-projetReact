@@ -1,45 +1,30 @@
+// [LEARN] main.ts est le point d'entrée de l'application NestJS.
+// [LEARN] Son rôle unique : créer l'application et démarrer le serveur HTTP.
+// [LEARN] Parallèle Angular : c'est l'équivalent de main.ts dans Angular (bootstrapModule).
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import * as cors from 'cors';
-//const cors = require('cors');
-
 
 async function bootstrap() {
-   const app = await NestFactory.create(AppModule);
-  //const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  //await app.listen(3000);
-  //app.use(cors());
-  app.enableCors();
-  await app.listen(3301);
+  const app = await NestFactory.create(AppModule);
 
-  // const corsOptions: CorsOptions = {
-  //   origin: true, // permet toutes les demandes depuis n'importe quel domaine
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  //   preflightContinue: false,
-  //   optionsSuccessStatus: 204,
-  // };
-  // app.enableCors(corsOptions); // activation de l'entête CORS
+  // [LEARN] ValidationPipe active la validation automatique des DTOs.
+  // [LEARN] Grâce à class-validator, si un champ obligatoire est manquant dans
+  // [LEARN] le body d'une requête, NestJS renvoie automatiquement une 400 Bad Request.
+  // [LEARN] whitelist:true = supprime les champs non déclarés dans le DTO (sécurité).
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
+  // [LEARN] CORS = Cross-Origin Resource Sharing. Sans ça, le navigateur bloque
+  // [LEARN] les requêtes du frontend (localhost:3000) vers le backend (localhost:3301)
+  // [LEARN] car ils sont sur des ports différents = origines différentes.
+  app.enableCors({
+    origin: process.env.FRONTEND_URL || '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+  });
 
-  // app.enableCors({
-  //   origin: 'http://localhost:15460'
-  // });
-  // app.use(cors({
-  //   origin: 'http://localhost:14535' // remplacez localhost:14535 par l'adresse de votre application React
-  // }));
-
-  // app.use(cors({
-  //   origin: 'http://localhost:14535',
-  //   methods: 'GET,PUT,POST,DELETE',
-  //   allowedHeaders: 'Content-Type, Authorization',
-  // }));
-  // app.enableCors({
-  //   origin: '*',
-  //   methods: 'GET,PUT,POST,DELETE',
-  //   allowedHeaders: 'Content-Type, Authorization',
-  // });
-
+  const port = process.env.PORT || 3301;
+  await app.listen(port);
 }
+
 bootstrap();

@@ -33,3 +33,15 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Environment variables — ne JAMAIS committer ce fichier
+.env
+.env.local
+.env.*.local
+
+# Images uploadées par les utilisateurs (binaires non versionnés)
+/public/images/*.jpg
+/public/images/*.jpeg
+/public/images/*.png
+/public/images/*.gif
+/public/images/*.webp
