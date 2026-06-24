@@ -100,8 +100,13 @@ function main() {
     run('git branch -f main HEAD', true);
 
     // --- Pousser main sur le remote ---
+    // [LEARN] --force-with-lease est plus sûr que --force :
+    // [LEARN] il vérifie que personne d'autre n'a poussé entre temps,
+    // [LEARN] mais écrase quand même l'historique distant.
+    // [LEARN] On en a besoin ici car la branche main remote avait un vieux README
+    // [LEARN] sans rapport avec notre code.
     console.log('🚀 Push vers origin/main...');
-    run('git push origin main');
+    run('git push origin main --force-with-lease');
 
     console.log('\n✅ Remote main mis à jour avec du code propre !\n');
   } catch (err) {
