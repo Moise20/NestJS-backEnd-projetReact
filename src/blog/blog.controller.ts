@@ -20,16 +20,18 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { extname } from 'path';
-import * as fs from 'fs';
 import { ArticleDto } from '../dtos/article.dto';
 import { CommentDto } from '../dtos/comment.dto';
 import { BlogService } from './blog.service';
+import { CloudinaryService } from './cloudinary.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('/blog')
 export class BlogController {
-  constructor(private readonly blogService: BlogService) {}
+  constructor(
+    private readonly blogService: BlogService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   // [LEARN] Routes GET = publiques. N'importe qui peut consulter le catalogue.
   @Get()
@@ -79,12 +81,8 @@ export class BlogController {
   ) {
     if (!file) throw new BadRequestException('Image requise');
 
-    const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}${extname(file.originalname)}`;
-    const filePath = `/images/${fileName}`;
-    const absolutePath = `${process.cwd()}/public/images/${fileName}`;
-
-    await fs.promises.writeFile(absolutePath, file.buffer);
-    return this.blogService.createdArticle(articleDto, filePath);
+    const imageUrl = await this.cloudinaryService.uploadImage(file);
+    return this.blogService.createdArticle(articleDto, imageUrl);
   }
 
   @Put(':articleId')
@@ -96,10 +94,7 @@ export class BlogController {
     @Body() articleDto: ArticleDto,
   ) {
     if (image) {
-      const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.jpg`;
-      const imagePath = `public/images/${fileName}`;
-      fs.writeFileSync(imagePath, image.buffer);
-      articleDto.image = imagePath;
+      articleDto.image = await this.cloudinaryService.uploadImage(image);
     }
 
     const article = await this.blogService.updateArticle(articleId, articleDto);
