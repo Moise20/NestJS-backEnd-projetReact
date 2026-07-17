@@ -17,8 +17,11 @@ async function bootstrap() {
   // [LEARN] CORS = Cross-Origin Resource Sharing. Sans ça, le navigateur bloque
   // [LEARN] les requêtes du frontend (localhost:3000) vers le backend (localhost:3301)
   // [LEARN] car ils sont sur des ports différents = origines différentes.
+  // [LEARN] On retire un éventuel '/' final : le header Origin envoyé par le navigateur
+  // [LEARN] n'en a jamais, donc "https://x.com/" ne matcherait jamais "https://x.com".
+  const frontendUrl = process.env.FRONTEND_URL?.replace(/\/$/, '') || '*';
   app.enableCors({
-    origin: process.env.FRONTEND_URL || '*',
+    origin: frontendUrl,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization',
   });
