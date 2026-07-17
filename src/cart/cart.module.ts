@@ -10,8 +10,6 @@ import { ArticleEntity } from '../blog/entities/article.entity';
   imports: [TypeOrmModule.forFeature([CartEntity, CartItemEntity, ArticleEntity])],
   controllers: [CartController],
   providers: [CartService],
-  // [LEARN] On exporte CartService pour qu'OrdersModule puisse vider le panier
-  // [LEARN] après une commande (clearCart).
   exports: [CartService],
 })
 export class CartModule {}

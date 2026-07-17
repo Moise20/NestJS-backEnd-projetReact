@@ -1,6 +1,3 @@
-// [LEARN] AuthModule configure Passport et JwtModule pour l'ensemble de l'application.
-// [LEARN] JwtModule.registerAsync lit JWT_SECRET depuis .env via ConfigService
-// [LEARN] (même pattern que TypeOrmModule.forRootAsync dans app.module.ts).
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -24,8 +21,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     }),
   ],
   controllers: [AuthController],
-  // [LEARN] On exporte JwtAuthGuard et JwtStrategy pour qu'ils soient utilisables
-  // [LEARN] dans les autres modules (CartModule, OrdersModule, etc.).
   providers: [AuthService, JwtStrategy],
   exports: [JwtModule],
 })

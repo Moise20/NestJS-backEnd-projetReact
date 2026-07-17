@@ -1,7 +1,3 @@
-// [LEARN] OrderItemEntity = une ligne de commande avec le prix figé au moment de l'achat.
-// [LEARN] articleTitle et unitPrice sont des COPIES des données de l'article,
-// [LEARN] pas des références. C'est voulu : si l'article est supprimé ou modifié,
-// [LEARN] l'historique de commande reste intègre.
 import {
   Column,
   Entity,
@@ -20,8 +16,6 @@ export class OrderItemEntity {
   @JoinColumn({ name: 'order_id' })
   order: OrderEntity;
 
-  // [LEARN] On stocke l'ID de l'article pour référence, mais pas en foreign key stricte
-  // [LEARN] (pas de ManyToOne) pour ne pas bloquer la suppression d'un article.
   @Column({ name: 'article_id', nullable: true })
   articleId: number;
 

@@ -1,7 +1,3 @@
-// [LEARN] CartItemEntity est la "ligne" du panier : quel article, en quelle quantité.
-// [LEARN] On référence l'ArticleEntity par relation (pas une copie) car le prix peut
-// [LEARN] encore changer avant la commande. Ce n'est qu'au moment de commander qu'on
-// [LEARN] "gèle" le prix dans OrderItemEntity.
 import {
   Column,
   Entity,

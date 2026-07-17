@@ -1,6 +1,3 @@
-// [LEARN] Toutes les routes du panier sont protégées par @UseGuards(JwtAuthGuard).
-// [LEARN] On ne peut pas consulter/modifier un panier sans être connecté.
-// [LEARN] @Request() injecte l'objet req Express — req.user est peuplé par JwtStrategy.validate().
 import {
   Body,
   Controller,
@@ -32,8 +29,6 @@ export class CartController {
     return this.cartService.addItem(req.user.id, dto.articleId, dto.quantity);
   }
 
-  // [LEARN] ParseIntPipe convertit automatiquement le paramètre de route (string)
-  // [LEARN] en number et renvoie une 400 si ce n'est pas un entier valide.
   @Patch('items/:itemId')
   updateItem(
     @Request() req,

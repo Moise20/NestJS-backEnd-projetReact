@@ -1,21 +1,14 @@
 #!/usr/bin/env node
 
-// [LEARN] Ce script sert à publier du code propre sur le remote GitHub (branche main).
-// [LEARN] En local on travaille sur la branche 'dev' avec des commentaires [LEARN] qui
-// [LEARN] expliquent le code. Ce script les supprime avant de pousser sur 'main'.
-// [LEARN] Résultat : GitHub ne montre que du code professionnel, sans commentaires scolaires.
 
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-// [LEARN] Les extensions de fichiers sur lesquelles on supprime les commentaires [LEARN]
 const TARGET_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
 
-// [LEARN] Dossiers à ignorer lors du scan des fichiers
 const IGNORED_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'coverage', '.next']);
 
-// [LEARN] Marqueur utilisé pour identifier les commentaires pédagogiques
 const LEARN_MARKER = '// [LEARN]';
 
 function run(cmd, silent = false) {
@@ -100,11 +93,6 @@ function main() {
     run('git branch -f main HEAD', true);
 
     // --- Pousser main sur le remote ---
-    // [LEARN] --force-with-lease est plus sûr que --force :
-    // [LEARN] il vérifie que personne d'autre n'a poussé entre temps,
-    // [LEARN] mais écrase quand même l'historique distant.
-    // [LEARN] On en a besoin ici car la branche main remote avait un vieux README
-    // [LEARN] sans rapport avec notre code.
     console.log('🚀 Push vers origin/main...');
     run('git push origin main --force-with-lease');
 

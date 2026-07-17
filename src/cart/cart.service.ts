@@ -1,5 +1,3 @@
-// [LEARN] CartService gère tout le cycle de vie du panier.
-// [LEARN] Chaque utilisateur a un panier "courant" (le dernier créé, non converti en commande).
 import {
   Injectable,
   NotFoundException,
@@ -24,9 +22,6 @@ export class CartService {
     private readonly articleRepository: Repository<ArticleEntity>,
   ) {}
 
-  // [LEARN] findOrCreateCart : on récupère le panier actif de l'utilisateur,
-  // [LEARN] ou on en crée un nouveau s'il n'en a pas.
-  // [LEARN] Cette méthode est privée car elle sert d'utilitaire interne.
   private async findOrCreateCart(userId: number): Promise<CartEntity> {
     let cart = await this.cartRepository.findOne({
       where: { user: { id: userId } },
@@ -62,8 +57,6 @@ export class CartService {
     const existingItem = cart.items.find((i) => i.article.id === articleId);
 
     if (existingItem) {
-      // [LEARN] Si l'article est déjà dans le panier, on incrémente la quantité
-      // [LEARN] plutôt que d'ajouter une nouvelle ligne.
       existingItem.quantity += quantity;
       await this.cartItemRepository.save(existingItem);
     } else {
@@ -103,8 +96,6 @@ export class CartService {
   async clearCart(userId: number): Promise<void> {
     const cart = await this.findOrCreateCart(userId);
     await this.cartItemRepository.remove(cart.items);
-    // [LEARN] On supprime aussi le cart pour qu'un nouveau soit créé à la prochaine
-    // [LEARN] utilisation. C'est plus propre que de garder un cart vide.
     await this.cartRepository.remove(cart);
   }
 }

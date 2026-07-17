@@ -1,6 +1,3 @@
-// [LEARN] OrdersService transforme un panier en commande (checkout).
-// [LEARN] C'est l'opération la plus critique du site : elle doit être atomique
-// [LEARN] (tout réussit ou tout échoue). En production on utiliserait une transaction DB.
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -27,10 +24,6 @@ export class OrdersService {
       throw new BadRequestException('Le panier est vide');
     }
 
-    // [LEARN] On crée d'abord la commande vide, puis on y ajoute les lignes.
-    // [LEARN] En production, tout ça serait dans une transaction (queryRunner)
-    // [LEARN] pour garantir l'atomicité : si la création d'un OrderItem échoue,
-    // [LEARN] la commande entière est annulée (rollback).
     const order = this.orderRepository.create({
       user: { id: userId } as any,
       totalAmount: 0,
@@ -62,9 +55,6 @@ export class OrdersService {
     savedOrder.totalAmount = total;
     await this.orderRepository.save(savedOrder);
 
-    // [LEARN] On vide le panier APRÈS avoir confirmé la commande.
-    // [LEARN] Si clearCart échoue, la commande existe quand même — c'est acceptable.
-    // [LEARN] Le contraire (commande échoue mais panier vidé) serait catastrophique.
     await this.cartService.clearCart(userId);
 
     return this.findOne(userId, savedOrder.id);

@@ -15,8 +15,6 @@ import { OrdersService } from './orders.service';
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  // [LEARN] POST /orders → transforme le panier courant en commande.
-  // [LEARN] Pas de body nécessaire : le panier est identifié via req.user.id.
   @Post()
   createOrder(@Request() req) {
     return this.ordersService.createFromCart(req.user.id);

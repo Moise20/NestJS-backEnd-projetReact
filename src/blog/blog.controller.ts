@@ -1,6 +1,3 @@
-// [LEARN] Le BlogController gère les routes publiques (lecture des articles/produits)
-// [LEARN] et les routes protégées (création, modification, suppression).
-// [LEARN] Les routes d'écriture exigent d'être authentifié (JwtAuthGuard).
 import {
   BadRequestException,
   Body,
@@ -33,7 +30,6 @@ export class BlogController {
     private readonly cloudinaryService: CloudinaryService,
   ) {}
 
-  // [LEARN] Routes GET = publiques. N'importe qui peut consulter le catalogue.
   @Get()
   async getAllArticles(
     @Query('limit') limit = 10,
@@ -70,8 +66,6 @@ export class BlogController {
     return this.blogService.getCommentsCount(articleId);
   }
 
-  // [LEARN] Routes POST/PUT/DELETE = protégées par JwtAuthGuard.
-  // [LEARN] Sans token valide dans le header Authorization, NestJS renvoie 401.
   @Post('article')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('image'))
